@@ -1,0 +1,73 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+
+struct Medicine {
+    std::string name;
+    std::string description;
+    std::string manufacturer;
+    double price;
+};
+
+struct Treatment {
+    std::string description;
+    std::vector<std::string> recommendedMedicines;
+};
+
+int main() {
+    std::map<std::string, Treatment> illnessTreatments;
+
+    std::vector<Medicine> medicines = {
+        {"Aspirin", "Pain reliever and fever reducer", "Bayer", 5.99},
+        {"Ibuprofen", "Nonsteroidal anti-inflammatory drug", "Advil", 7.49},
+        {"Amoxicillin", "Antibiotic", "Pfizer", 10.99},
+        {"Lisinopril", "Blood pressure medication", "AstraZeneca", 8.99}
+    };
+
+    illnessTreatments["Headache"] = {"Medicines to relieve headache", {"Aspirin", "Ibuprofen"}};
+    illnessTreatments["Fever"] = {"Medicines to reduce fever", {"Aspirin"}};
+    illnessTreatments["Cold"] = {"Medicines for common cold", {"Aspirin", "Ibuprofen"}};
+
+    std::string name;
+    int age;
+    std::string gender;
+
+    std::cout << "Welcome to User Registration\n";
+    std::cout << "Please enter your name: ";
+    std::getline(std::cin, name);
+
+    std::cout << "Please enter your age: ";
+    std::cin >> age;
+    std::cin.ignore(); // Consume the newline character
+
+    std::cout << "Please enter your gender: ";
+    std::cin >> gender;
+    std::cin.ignore(); // Consume the newline character
+
+    std::cout << "\nThank you for registering!\n";
+    std::cout << "Name: " << name << "\n";
+    std::cout << "Age: " << age << "\n";
+    std::cout << "Gender: " << gender << "\n";
+
+    std::cout << "Enter the illness you are facing: ";
+    std::string userIllness;
+    std::cin >> userIllness;
+
+    if (illnessTreatments.find(userIllness) != illnessTreatments.end()) {
+        const Treatment& recommendedTreatment = illnessTreatments[userIllness];
+
+        std::cout << "Recommended medicines for " << userIllness << ":" << std::endl;
+        for (const std::string& medName : recommendedTreatment.recommendedMedicines) {
+            for (const Medicine& med : medicines) {
+                if (med.name == medName) {
+                    std::cout << "Medicine: " << med.name << " - Description: " << med.description << std::endl;
+                }
+            }
+        }
+    } else {
+        std::cout << "Sorry, we don't have a specific treatment for that illness." << std::endl;
+    }
+
+    return 0;
+}
